@@ -6,18 +6,28 @@ import { useEffect, useState } from 'react'
 import { Skeleton } from '../../components/Skeleton/Skeleton'
 import { Pagination } from '../../components/Pagination/Pagination'
 import { Categories } from '../../components/Categories/Categories'
+import { Searth } from '../../components/Searth/Searth'
+import { useDebounce } from '../../components/helpers/hooks/useDebounce'
 
 
 export const Main = () => {
 
   const [news, setNews] = useState([])
+
   const [isLoading, setIsLoading] = useState(true)
+
   const [currentPage, setCurrentPage] = useState(1)
+
   const [categories, setCategories] = useState([])
   const [selectedCategory, setSelectedCategory ] = useState('All')
+
+  const [keywords, setKeywords] = useState('')
+
   const totalPages = 10
   const pageSize = 10
   
+  const debouncedKeywords = useDebounce(keywords, 1500)
+
   const fetchNews = async (currentPage) => {
     try {
       setIsLoading(true)
@@ -25,6 +35,7 @@ export const Main = () => {
         page_number:currentPage,
         page_size: pageSize,
         category: selectedCategory === 'All' ? null : selectedCategory,
+        keywords: keywords
       })
       setNews(response.news)
       setIsLoading(false)
@@ -51,7 +62,7 @@ export const Main = () => {
 
     fetchNews(currentPage);
 
-  }, [currentPage, selectedCategory])
+  }, [currentPage, selectedCategory, debouncedKeywords])
 
   const handleNextPage = () => {
     if(currentPage < totalPages){
@@ -69,10 +80,11 @@ export const Main = () => {
       setCurrentPage(pageNumber)
     
   }
-
+ 
   return (
     <main className={styles.main}>
       <Categories catgories={categories} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
+      <Searth keywords={keywords} setKeywords={setKeywords}/>
       {news.length > 0 && !isLoading ? <NewsBaner item={news[0]} /> : <Skeleton count={1} type='banner' />}
       <Pagination
         currentPage={currentPage}

@@ -1,6 +1,13 @@
 .main {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 32px;
     width: 100%;
+}
+
+@media (max-width: 772px) {
+    .main {
+        grid-template-columns: 1fr;
+    }
+
 }

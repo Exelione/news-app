@@ -1,7 +1,11 @@
-
 import styles from './styles.module.css'
 
-export const Searth = ({keywords, setKeywords}) => {
+interface Props {
+    keywords: string,
+    setKeywords: (keywords: string)=>void
+}
+
+export const Searth = ({keywords, setKeywords}: Props) => {
     return (
         <div className={styles.searth}>
             <input type="text"

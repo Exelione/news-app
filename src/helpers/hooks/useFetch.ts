@@ -1,9 +1,21 @@
 import { useEffect, useState } from "react"
 
-export const useFetch = (fetchFunction, params) => {
-    const [data, setData] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+interface FetchFunction<P, T>{
+    (params?: P): Promise<T>
+}
+interface UseFetchRes<T>{
+    data: T | null | undefined,
+    isLoading: boolean,
+    error: Error | null
+}
+
+export const useFetch = <T, P>(
+    fetchFunction: FetchFunction<P,T>,
+    params?: P
+): UseFetchRes<T> => {
+    const [data, setData] = useState<T | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<Error | null>(null);
 
     const stringParams = params ? new URLSearchParams(params).toString() : '';
 

@@ -3,7 +3,6 @@ import LatestNews from '../../components/LatestNews/LatestNews'
 import { NewsByFilters } from '../../components/NewsByFilters/NewsByFilters'
 
 
-
 export const Main = () => {
 
   
@@ -13,7 +12,7 @@ export const Main = () => {
 
       <LatestNews />
       
-      <NewsByFilters/>
+      <NewsByFilters />
     </main>
   )
 }

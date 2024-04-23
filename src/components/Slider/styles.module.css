@@ -11,6 +11,16 @@
     cursor: pointer;
 }
 
+.slider.dark .arrow {
+    background-color: #23272f;
+    color: #f6f7f9;
+}
+
+.slider.light .arrow {
+    background-color: white;
+    color: black;
+}
+
 @media (max-width: 472px){
     .arrow{
         display: none;

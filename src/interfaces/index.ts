@@ -17,6 +17,17 @@ export interface IPaginationProps {
     currentPage: number,
 }
 
+export enum Status {
+    Error = 'error',
+    Ok = 'ok'
+}
+export interface NewApiResponse {
+    news: Array<INews>,
+    page: number,
+    status: Status
+
+}
+
 export type SkeletonType = 'banner' | 'item'
 
 export type DirectionType = 'row' | 'column'

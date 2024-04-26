@@ -1,39 +1,42 @@
-import { getCategories } from "../../api/apiNews"
 import { Categories } from "../Categories/Categories"
 import { Searth } from "../Searth/Searth"
 import { Slider } from "../Slider/Slider"
-import { useFetch } from "../../helpers/hooks/useFetch"
 import styles from './styles.module.css'
-import { CategoriesApiResponse, IFilters } from "../../interfaces"
 import { useTheme } from "../../context/ThemeContext"
+import { useGetCategoriesQuery } from "../../store/services/newsApi"
+import { IFilters } from "../../interfaces"
+import { useDispatch } from "react-redux"
+import { setFilters } from "../../store/slices/newsSlice"
 
 interface Props {
     filters: IFilters,
-    changeFilter: (key: string, value: string | number | null) => void,
-    
 }
 
-export const NewsFilters = ({ filters, changeFilter }: Props) => {
+export const NewsFilters = ({ filters }: Props) => {
     const { isDark } = useTheme();
-    const { data: dataCategories } = useFetch<CategoriesApiResponse, null>(getCategories)
+    const { data } = useGetCategoriesQuery(null);
+    const dispatch = useDispatch();
+
+
     return (
 
         <div className={styles.filters}>
-            {dataCategories ? (
+            {data ? (
                 <Slider isDark={isDark}>
                     <Categories
-                    catgories={dataCategories.categories}
-                    selectedCategory={filters.category}
-                    setSelectedCategory={
-                        (category) => 
-                        changeFilter('category', category)
-                    }
-                />
+                        catgories={data.categories}
+                        selectedCategory={filters.category}
+                        setSelectedCategory={
+                            (category) =>
+                                dispatch(setFilters({ key: 'category', value: category }))
+                        }
+                    />
                 </Slider>
             ) : null}
 
 
-            <Searth keywords={filters.keywords} setKeywords={(keywords) => changeFilter('keywords', keywords)} />
+            <Searth keywords={filters.keywords} setKeywords={(keywords) =>
+                dispatch(setFilters({ key: 'keywords', value: keywords }))} />
         </div>
 
     )
